@@ -2,7 +2,6 @@ import fetch from "node-fetch";
 import loadConfig from "./config.js";
 
 const config = loadConfig();
-console.log("Config", config);
 /**
  * Register the metadata to be stored by Discord. This should be a one time action.
  * Note: uses a Bot token for authentication, not a user token.
@@ -28,9 +27,7 @@ const response = await fetch(url, {
 });
 if (response.ok) {
   const data = await response.json();
-  console.log(data);
 } else {
   //throw new Error(`Error pushing discord metadata schema: [${response.status}] ${response.statusText}`);
   const data = await response.text();
-  console.log(data);
 }
