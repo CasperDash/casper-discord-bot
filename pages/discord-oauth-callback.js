@@ -1,4 +1,4 @@
-import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
+import { getCookie } from "cookies-next";
 import {
   CLPublicKey,
   decodeBase16,
@@ -42,7 +42,6 @@ export async function getServerSideProps({ req, res, query }) {
       const data = {
         error: "State verification failed.",
       };
-      console.log("Im here", clientState, discordState);
       return {
         props: {
           data,
@@ -51,8 +50,6 @@ export async function getServerSideProps({ req, res, query }) {
     }
 
     const tokens = await discord.getOAuthTokens(code);
-
-    console.log("Cookie Code", clientState, code, tokens);
 
     // 2. Uses the Discord Access Token to fetch the user profile
     const meData = await discord.getUserData(tokens);
@@ -65,7 +62,6 @@ export async function getServerSideProps({ req, res, query }) {
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     const updatedMetadata = await updateMetadata(userId, { publicKey });
-    console.log("UserID", userId, meData.user, updatedMetadata.jsonData);
 
     return {
       props: {
@@ -121,9 +117,14 @@ function DiscordResult({ data }) {
   return (
     <div>
       {error ? (
-        <span>{error}</span>
+        <span className="error">{error}. Please try again.</span>
       ) : (
-        <div>Linked {user.username} with Casper Wallet</div>
+        <div>
+          <h3>
+            Linked {user.username} with Casper Wallet. Please go back your
+            Discord.
+          </h3>
+        </div>
       )}
     </div>
   );
