@@ -36,11 +36,11 @@ const DiscordForm = ({ url, pk }) => {
   return (
     <div>
       {data ? (
-        <a href={`${url}&signature=${data}`}>Link to Discord {url}</a>
+        <a href={`${url}&signature=${data}`}>Link to Discord</a>
       ) : (
         <form className="singer-form" onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" />
-          <button type="submit">Sign to connect Discord</button>
+          <button type="submit">Sign Message</button>
         </form>
       )}
     </div>
