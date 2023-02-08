@@ -36,8 +36,8 @@ function WalletConnector({ data }) {
       {publicKey ? (
         <div>
           <p>
-            Your Casper Wallet <small>{publicKey}</small> has been verified, but
-            you must link it with Discord to finish
+            Your Casper Wallet has been verified, but you must link it with
+            Discord to finish
           </p>
           <div>
             <DiscordForm url={`${data.url}&pk=${publicKey}`} pk={publicKey} />
