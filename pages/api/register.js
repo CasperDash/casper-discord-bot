@@ -3,7 +3,6 @@ import loadConfig from "../../src/config.js";
 
 export default async function handler(req, res) {
   const config = loadConfig();
-  console.log("Config", config);
   /**
    * Register the metadata to be stored by Discord. This should be a one time action.
    * Note: uses a Bot token for authentication, not a user token.
@@ -29,12 +28,10 @@ export default async function handler(req, res) {
   });
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     res.status(200).json(data);
   } else {
     //throw new Error(`Error pushing discord metadata schema: [${response.status}] ${response.statusText}`);
     const data = await response.text();
-    console.log(data);
     res.status(200).json({
       error: data,
     });
