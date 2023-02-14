@@ -1,12 +1,12 @@
 {
-  "name": "linked-role-bot",
+  "name": "linked-casper-wallet-to-role-bot",
   "version": "1.0.0",
   "private": "true",
   "type": "module",
   "engines": {
     "node": ">=16"
   },
-  "description": "A very simple example of a Linked Role bot for Discord.",
+  "description": "Linked Casper Wallet bot for Discord.",
   "main": "server.js",
   "scripts": {
     "dev": "next dev",
