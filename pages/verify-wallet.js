@@ -1,12 +1,16 @@
-import { CapserDashConnector, CasperSignerConnector } from "@usedapp/core";
-import { useAccount, useConnect } from "@usedapp/react";
+import {
+  CapserDashConnector,
+  CasperSignerConnector,
+  useAccount,
+  useConnect,
+} from "@casperdash/usewallet";
 import { setCookie } from "cookies-next";
 import * as discord from "../src/discord.js";
 import DiscordForm from "../components/discordForm";
 
 const CasperDashButton = () => {
   const { connect } = useConnect({
-    connector: new CapserDashConnector({}),
+    connector: new CapserDashConnector(),
   });
 
   return (

@@ -1,4 +1,4 @@
-import { useAccount, useSignMessage } from "@usedapp/react";
+import { useAccount, useSignMessage } from "@casperdash/usewallet";
 import { useForm } from "react-hook-form";
 import { setCookie } from "cookies-next";
 
