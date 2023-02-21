@@ -1,14 +1,14 @@
 import {
   CasperProvider,
   createClient,
-  CapserDashConnector,
+  CasperDashConnector,
   CasperSignerConnector,
 } from "@casperdash/usewallet";
 import "../css/style.css";
 import Layout from "../components/layout";
 
 const client = createClient({
-  connectors: [new CasperSignerConnector(), new CapserDashConnector()],
+  connectors: [new CasperSignerConnector(), new CasperDashConnector()],
 });
 
 export default function MyApp({ Component, pageProps }) {

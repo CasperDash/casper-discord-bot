@@ -1,5 +1,5 @@
 import {
-  CapserDashConnector,
+  CasperDashConnector,
   CasperSignerConnector,
   useAccount,
   useConnect,
@@ -10,7 +10,7 @@ import DiscordForm from "../components/discordForm";
 
 const CasperDashButton = () => {
   const { connect } = useConnect({
-    connector: new CapserDashConnector(),
+    connector: new CasperDashConnector(),
   });
 
   return (

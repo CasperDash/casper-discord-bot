@@ -29,7 +29,7 @@ const DiscordForm = ({ url, pk }) => {
   const onSubmit = (formValues: FormValues) => {
     signMessage({
       message: `link-discord-${pk}`,
-      signingPublicKey: pk,
+      signingPublicKeyHex: pk,
     });
   };
 
