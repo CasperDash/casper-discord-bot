@@ -61,7 +61,9 @@ export async function getServerSideProps({ req, res, query }) {
     });
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
-    const updatedMetadata = await updateMetadata(userId, { publicKey });
+    await updateMetadata(userId, {
+      casperwallet: true,
+    });
 
     return {
       props: {
