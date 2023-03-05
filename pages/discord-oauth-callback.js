@@ -2,6 +2,7 @@ import { getCookie } from "cookies-next";
 import * as storage from "../src/storage.js";
 import * as discord from "../src/discord.js";
 import { connectToDb } from "../src/db";
+import Entry from "../src/db/models/Entry";
 
 export const verifyWallet = (publicKey, signature) => {
   const {
@@ -118,8 +119,6 @@ async function updateMetadata(userId, { casperwallet }) {
 }
 
 async function persistWalletInfo(userId, { publicKey }) {
-  const Entry = require("../src/db/models/Entry");
-
   await connectToDb();
   const entry = new Entry({
     userId,
