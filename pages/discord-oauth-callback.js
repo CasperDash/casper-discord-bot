@@ -1,6 +1,7 @@
 import { getCookie } from "cookies-next";
 import * as storage from "../src/storage.js";
 import * as discord from "../src/discord.js";
+import { connectToDb } from "../src/db";
 
 export const verifyWallet = (publicKey, signature) => {
   const {
@@ -65,6 +66,8 @@ export async function getServerSideProps({ req, res, query }) {
       casperwallet: 1,
     });
 
+    await persistWalletInfo(userId, { publicKey });
+
     return {
       props: {
         data: {
@@ -112,6 +115,18 @@ async function updateMetadata(userId, { casperwallet }) {
 
   // Push the data to Discord.
   return await discord.pushMetadata(userId, tokens, metadata);
+}
+
+async function persistWalletInfo(userId, { publicKey }) {
+  const Entry = require("../src/db/models/Entry");
+
+  await connectToDb();
+  const entry = new Entry({
+    userId,
+    publicKey,
+  });
+
+  return await entry.save();
 }
 
 function DiscordResult({ data }) {
