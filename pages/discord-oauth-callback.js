@@ -1,13 +1,13 @@
 import { getCookie } from "cookies-next";
-import {
-  CLPublicKey,
-  decodeBase16,
-  verifyMessageSignature,
-} from "casper-js-sdk";
 import * as storage from "../src/storage.js";
 import * as discord from "../src/discord.js";
 
 export const verifyWallet = (publicKey, signature) => {
+  const {
+    CLPublicKey,
+    decodeBase16,
+    verifyMessageSignature,
+  } = require("casper-js-sdk");
   if (!signature) {
     return false;
   }
