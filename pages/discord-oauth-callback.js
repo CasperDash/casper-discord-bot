@@ -71,7 +71,7 @@ export async function getServerSideProps({ req, res, query }) {
       },
     };
   } catch (error) {
-    console.error("Im here", error);
+    console.error("Error happened", error);
     return {
       props: {
         data: {
