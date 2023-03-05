@@ -1,4 +1,4 @@
-import nconf from 'nconf';
+// import nconf from "nconf";
 
 /**
  * Parse configuration data from either environment variables, command line
@@ -6,14 +6,15 @@ import nconf from 'nconf';
  * configuration should not be checked into source control.
  */
 
-nconf.env().argv().file('config.json');
-
-const config = {
-  DISCORD_TOKEN: nconf.get('DISCORD_TOKEN'),
-  DISCORD_CLIENT_ID: nconf.get('DISCORD_CLIENT_ID'),
-  DISCORD_CLIENT_SECRET: nconf.get('DISCORD_CLIENT_SECRET'),
-  DISCORD_REDIRECT_URI: nconf.get('DISCORD_REDIRECT_URI'),
-  COOKIE_SECRET: nconf.get('COOKIE_SECRET'),
+const loadConfig = () => {
+  // nconf.env().argv().file("config.json");
+  const config = {
+    DISCORD_TOKEN: process.env.DISCORD_TOKEN,
+    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    DISCORD_REDIRECT_URI: process.env.DISCORD_REDIRECT_URI,
+    COOKIE_SECRET: process.env.COOKIE_SECRET,
+  };
+  return config;
 };
-
-export default config;
+export default loadConfig;

@@ -1,37 +1,37 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
+import express from "express";
+import cookieParser from "cookie-parser";
 
-import config from './config.js';
-import * as discord from './discord.js';
-import * as storage from './storage.js';
+import config from "./config.js";
+import * as discord from "./discord.js";
+import * as storage from "./storage.js";
 
 /**
  * Main HTTP server used for the bot.
  */
 
- const app = express();
- app.use(cookieParser(config.COOKIE_SECRET));
+const app = express();
+app.use(cookieParser(config.COOKIE_SECRET));
 
- /**
-  * Just a happy little route to show our server is up.
-  */
- app.get('/', (req, res) => {
-   res.send('👋');
- });
+/**
+ * Just a happy little route to show our server is up.
+ */
+app.get("/", (req, res) => {
+  res.send("👋");
+});
 
 /**
  * Route configured in the Discord developer console which facilitates the
- * connection between Discord and any additional services you may use. 
- * To start the flow, generate the OAuth2 consent dialog url for Discord, 
+ * connection between Discord and any additional services you may use.
+ * To start the flow, generate the OAuth2 consent dialog url for Discord,
  * and redirect the user there.
  */
-app.get('/verified-role', async (req, res) => {
+app.get("/verified-role", async (req, res) => {
   const { url, state } = discord.getOAuthUrl();
 
   // Store the signed state param in the user's cookies so we can verify
   // the value later. See:
   // https://discord.com/developers/docs/topics/oauth2#state-and-security
-  res.cookie('clientState', state, { maxAge: 1000 * 60 * 5, signed: true });
+  res.cookie("clientState", state, { maxAge: 1000 * 60 * 5, signed: true });
 
   // Send the user to the Discord owned OAuth2 authorization endpoint
   res.redirect(url);
@@ -46,16 +46,16 @@ app.get('/verified-role', async (req, res) => {
  * 3. Stores the OAuth2 Discord Tokens in Redis / Firestore
  * 4. Lets the user know it's all good and to go back to Discord
  */
- app.get('/discord-oauth-callback', async (req, res) => {
+app.get("/discord-oauth-callback", async (req, res) => {
   try {
     // 1. Uses the code and state to acquire Discord OAuth2 tokens
-    const code = req.query['code'];
-    const discordState = req.query['state'];
+    const code = req.query["code"];
+    const discordState = req.query["state"];
 
     // make sure the state parameter exists
     const { clientState } = req.signedCookies;
     if (clientState !== discordState) {
-      console.error('State verification failed.');
+      console.error("State verification failed.");
       return res.sendStatus(403);
     }
 
@@ -73,7 +73,7 @@ app.get('/verified-role', async (req, res) => {
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId);
 
-    res.send('You did it!  Now go back to Discord.');
+    res.send("You did it!  Now go back to Discord.");
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
@@ -81,14 +81,14 @@ app.get('/verified-role', async (req, res) => {
 });
 
 /**
- * Example route that would be invoked when an external data source changes. 
+ * Example route that would be invoked when an external data source changes.
  * This example calls a common `updateMetadata` method that pushes static
  * data to Discord.
  */
- app.post('/update-metadata', async (req, res) => {
+app.post("/update-metadata", async (req, res) => {
   try {
     const userId = req.body.userId;
-    await updateMetadata(userId)
+    await updateMetadata(userId);
 
     res.sendStatus(204);
   } catch (e) {
@@ -97,23 +97,23 @@ app.get('/verified-role', async (req, res) => {
 });
 
 /**
- * Given a Discord UserId, push static make-believe data to the Discord 
- * metadata endpoint. 
+ * Given a Discord UserId, push static make-believe data to the Discord
+ * metadata endpoint.
  */
 async function updateMetadata(userId) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
-    
+
   let metadata = {};
   try {
-    // Fetch the new metadata you want to use from an external source. 
+    // Fetch the new metadata you want to use from an external source.
     // This data could be POST-ed to this endpoint, but every service
     // is going to be different.  To keep the example simple, we'll
-    // just generate some random data. 
+    // just generate some random data.
     metadata = {
       cookieseaten: 1483,
       allergictonuts: false,
-      firstcookiebaked: '2003-12-20',
+      firstcookiebaked: "2003-12-20",
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;
@@ -127,7 +127,6 @@ async function updateMetadata(userId) {
   // Push the data to Discord.
   await discord.pushMetadata(userId, tokens, metadata);
 }
-
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
