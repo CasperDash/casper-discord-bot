@@ -17,6 +17,10 @@ export default mongoose.models.Entry ||
           type: Boolean,
           default: false,
         },
+        isHammerHodler: {
+          type: Boolean,
+          default: false,
+        },
       },
       {
         timestamps: true,
