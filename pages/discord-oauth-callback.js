@@ -71,7 +71,7 @@ export async function getServerSideProps({ req, res, query }) {
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
-      isHammerHodler: canMintData.canMint ? 1 : 0,
+      ishammerhodler: canMintData.canMint ? 1 : 0,
     });
 
     await persistWalletInfo(userId, {
@@ -102,7 +102,7 @@ export async function getServerSideProps({ req, res, query }) {
  * Given a Discord UserId, push static make-believe data to the Discord
  * metadata endpoint.
  */
-async function updateMetadata(userId, { casperwallet }) {
+async function updateMetadata(userId, { casperwallet, ishammerhodler }) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
 
@@ -114,6 +114,7 @@ async function updateMetadata(userId, { casperwallet }) {
     // just generate some random data.
     metadata = {
       casperwallet,
+      ishammerhodler,
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;

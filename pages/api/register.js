@@ -16,6 +16,12 @@ export default async function handler(req, res) {
       description: "Is Connected to Casper Wallet",
       type: 7,
     },
+    {
+      key: "ishammerholder",
+      name: "Hammer Hodler",
+      description: "Have Hammer",
+      type: 7,
+    },
   ];
 
   const response = await fetch(url, {
