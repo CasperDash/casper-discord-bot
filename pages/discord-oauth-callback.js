@@ -102,7 +102,7 @@ export async function getServerSideProps({ req, res, query }) {
  * Given a Discord UserId, push static make-believe data to the Discord
  * metadata endpoint.
  */
-async function updateMetadata(userId, { casperwallet, ishammerhodler }) {
+async function updateMetadata(userId, { casperwallet, ishammerholder }) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
 
@@ -114,7 +114,7 @@ async function updateMetadata(userId, { casperwallet, ishammerhodler }) {
     // just generate some random data.
     metadata = {
       casperwallet,
-      ishammerhodler,
+      ishammerholder,
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;
