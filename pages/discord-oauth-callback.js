@@ -62,12 +62,22 @@ export async function getServerSideProps({ req, res, query }) {
       expires_at: Date.now() + tokens.expires_in * 1000,
     });
 
+    const canMintRes = await fetch(
+      `https://api.eggforce.io/user/${publicKey}/canMintNFT`
+    );
+
+    const canMintData = await canMintRes.json();
+
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
+      isHammerHodler: canMintData.canMint ? 1 : 0,
     });
 
-    await persistWalletInfo(userId, { publicKey });
+    await persistWalletInfo(userId, {
+      publicKey,
+      isHammerHodler: canMintData.canMint,
+    });
 
     return {
       props: {
@@ -118,11 +128,12 @@ async function updateMetadata(userId, { casperwallet }) {
   return await discord.pushMetadata(userId, tokens, metadata);
 }
 
-async function persistWalletInfo(userId, { publicKey }) {
+async function persistWalletInfo(userId, { publicKey, isHammerHodler }) {
   await connectToDb();
   const entry = new Entry({
     userId,
     publicKey,
+    isHammerHodler,
   });
 
   return await entry.save();
