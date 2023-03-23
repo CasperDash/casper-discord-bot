@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       type: 7,
     },
     {
-      key: "hammerholder",
+      key: "havehammer",
       name: "Hammer Hodler",
       description: "Have Hammer",
       type: 7,
