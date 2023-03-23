@@ -71,7 +71,7 @@ export async function getServerSideProps({ req, res, query }) {
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
-      ishammerhodler: canMintData.canMint ? 1 : 0,
+      ishammerholder: canMintData.canMint ? 1 : 0,
     });
 
     await persistWalletInfo(userId, {
