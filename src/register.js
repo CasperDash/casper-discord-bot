@@ -15,6 +15,12 @@ const body = [
     description: "Linked Casper Wallet",
     type: 7,
   },
+  {
+    key: "isHammerHodler",
+    name: "Hammer Hodler",
+    description: "Have Hammer",
+    type: 7,
+  },
 ];
 
 const response = await fetch(url, {
