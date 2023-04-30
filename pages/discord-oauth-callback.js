@@ -1,6 +1,8 @@
 import { getCookie } from "cookies-next";
 import * as storage from "../src/storage.js";
 import * as discord from "../src/discord.js";
+import { connectToDb } from "../src/db";
+import Entry from "../src/db/models/Entry";
 
 export const verifyWallet = (publicKey, signature) => {
   const {
@@ -60,9 +62,21 @@ export async function getServerSideProps({ req, res, query }) {
       expires_at: Date.now() + tokens.expires_in * 1000,
     });
 
+    const canMintRes = await fetch(
+      `https://api.eggforce.io/user/${publicKey}/canMintNFT`
+    );
+
+    const canMintData = await canMintRes.json();
+
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
+      havehammer: canMintData.canMint ? 1 : 0,
+    });
+
+    await persistWalletInfo(userId, {
+      publicKey,
+      isHammerHodler: canMintData.canMint,
     });
 
     return {
@@ -88,7 +102,7 @@ export async function getServerSideProps({ req, res, query }) {
  * Given a Discord UserId, push static make-believe data to the Discord
  * metadata endpoint.
  */
-async function updateMetadata(userId, { casperwallet }) {
+async function updateMetadata(userId, { casperwallet, havehammer }) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
 
@@ -100,6 +114,7 @@ async function updateMetadata(userId, { casperwallet }) {
     // just generate some random data.
     metadata = {
       casperwallet,
+      havehammer,
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;
@@ -112,6 +127,22 @@ async function updateMetadata(userId, { casperwallet }) {
 
   // Push the data to Discord.
   return await discord.pushMetadata(userId, tokens, metadata);
+}
+
+async function persistWalletInfo(userId, { publicKey, isHammerHodler }) {
+  await connectToDb();
+  return await Entry.updateOne(
+    {
+      userId,
+    },
+    {
+      publicKey,
+      isHammerHodler,
+    },
+    {
+      upsert: true,
+    }
+  );
 }
 
 function DiscordResult({ data }) {

@@ -22,7 +22,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/verify-wallet.js"  ],
+, "pages/verify-wallet.js", "src/db/models/Entry.js"  ],
   "exclude": [
     "node_modules"
   ]
