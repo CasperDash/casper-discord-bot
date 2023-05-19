@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       type: 7,
     },
     {
-      key: "isWLWinner",
+      key: "iswlwinner",
       name: "Whitelist Winner",
       description: "Whitelist Winner",
       type: 7,

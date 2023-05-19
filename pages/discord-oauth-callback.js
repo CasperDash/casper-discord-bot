@@ -71,7 +71,7 @@ export async function getServerSideProps({ req, res, query }) {
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
-      isWLWinner: obj.isWLWinner ? 1 : 0,
+      iswlwinner: obj.isWLWinner ? 1 : 0,
     });
 
     await persistWalletInfo(userId, {
@@ -102,7 +102,7 @@ export async function getServerSideProps({ req, res, query }) {
  * Given a Discord UserId, push static make-believe data to the Discord
  * metadata endpoint.
  */
-async function updateMetadata(userId, { casperwallet, isWLWinner }) {
+async function updateMetadata(userId, { casperwallet, iswlwinner }) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
 
@@ -114,7 +114,7 @@ async function updateMetadata(userId, { casperwallet, isWLWinner }) {
     // just generate some random data.
     metadata = {
       casperwallet,
-      isWLWinner,
+      iswlwinner,
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;
@@ -129,7 +129,10 @@ async function updateMetadata(userId, { casperwallet, isWLWinner }) {
   return await discord.pushMetadata(userId, tokens, metadata);
 }
 
-async function persistWalletInfo(userId, { publicKey, isHammerHodler }) {
+async function persistWalletInfo(
+  userId,
+  { publicKey, isHammerHodler, isWLWinner }
+) {
   await connectToDb();
   return await Entry.updateOne(
     {
@@ -138,6 +141,7 @@ async function persistWalletInfo(userId, { publicKey, isHammerHodler }) {
     {
       publicKey,
       isHammerHodler,
+      isWLWinner,
     },
     {
       upsert: true,
