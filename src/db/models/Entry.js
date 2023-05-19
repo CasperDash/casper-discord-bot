@@ -21,6 +21,10 @@ export default mongoose.models.Entry ||
           type: Boolean,
           default: false,
         },
+        isWLWinner: {
+          type: Boolean,
+          default: false,
+        },
       },
       {
         timestamps: true,

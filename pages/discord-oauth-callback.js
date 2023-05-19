@@ -62,21 +62,21 @@ export async function getServerSideProps({ req, res, query }) {
       expires_at: Date.now() + tokens.expires_in * 1000,
     });
 
-    const canMintRes = await fetch(
-      `https://api.eggforce.io/user/${publicKey}/canMintNFT`
+    const isWLWinnerRes = await fetch(
+      `https://api.eggforce.io/lead/${publicKey}/wl-winner`
     );
 
-    const canMintData = await canMintRes.json();
+    const obj = await isWLWinnerRes.json();
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
-      havehammer: canMintData.canMint ? 1 : 0,
+      isWLWinner: obj.isWLWinner ? 1 : 0,
     });
 
     await persistWalletInfo(userId, {
       publicKey,
-      isHammerHodler: canMintData.canMint,
+      isWLWinner: obj.isWLWinner,
     });
 
     return {
