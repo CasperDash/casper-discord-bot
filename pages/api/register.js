@@ -22,6 +22,12 @@ export default async function handler(req, res) {
       description: "Have Hammer",
       type: 7,
     },
+    {
+      key: "isWLWinner",
+      name: "Whitelist Winner",
+      description: "Whitelist Winner",
+      type: 7,
+    },
   ];
 
   const response = await fetch(url, {
