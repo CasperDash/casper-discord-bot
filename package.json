@@ -18,7 +18,7 @@
   "author": "Justin Beckwith <justin.beckwith@discordapp.com>",
   "license": "MIT",
   "dependencies": {
-    "@casperdash/usewallet": "^0.0.3",
+    "@casperdash/usewallet": "^0.0.5",
     "casper-js-sdk": "^2.10.2",
     "cookie-parser": "^1.4.6",
     "cookies-next": "^2.1.1",
