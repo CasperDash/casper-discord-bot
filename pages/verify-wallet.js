@@ -1,6 +1,7 @@
 import {
   CasperDashConnector,
   CasperSignerConnector,
+  CasperWalletConnector,
   useAccount,
   useConnect,
 } from "@casperdash/usewallet";
@@ -32,6 +33,18 @@ const CasperSignerButton = () => {
   );
 };
 
+const CasperWalletButton = () => {
+  const { connect } = useConnect({
+    connector: new CasperWalletConnector({}),
+  });
+
+  return (
+    <div>
+      <button onClick={() => connect()}>Connect with Casper Wallet</button>
+    </div>
+  );
+};
+
 function WalletConnector({ data }) {
   const { publicKey } = useAccount();
   return (
@@ -52,6 +65,8 @@ function WalletConnector({ data }) {
           <CasperSignerButton />
           <br />
           <CasperDashButton />
+          <br />
+          <CasperWalletButton />
         </div>
       )}
     </div>

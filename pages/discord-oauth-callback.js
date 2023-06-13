@@ -74,6 +74,7 @@ export async function getServerSideProps({ req, res, query }) {
       iswlwinner: obj.isWLWinner ? 1 : 0,
     });
 
+    // Call CRM API to update isClaimedWL = true based on public key
     await persistWalletInfo(userId, {
       publicKey,
       isWLWinner: obj.isWLWinner,
