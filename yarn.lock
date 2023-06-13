@@ -2,21 +2,22 @@
 # yarn lockfile v1
 
 
-"@casperdash/usewallet-core@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@casperdash/usewallet-core/-/usewallet-core-0.0.3.tgz#69845b22a3ea82f870dfaec2c6546442a97f94cb"
-  integrity sha512-Fdufz8r+ZYBn+ZmW7rRNzt7IN2EMDb2yBs42PxU2HlPixyGZnvj+Vpn1DB+VyvApIrTg0gceJaOxKDQqhZACew==
+"@casperdash/usewallet-core@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@casperdash/usewallet-core/-/usewallet-core-0.0.5.tgz#6a429c8fd1baa9994f475d0f118bf91be61da0e4"
+  integrity sha512-0A2FOc+A8MfLhCGZYDiw3aCtdXfkqv1BGjoJnQkWXUPz1UDCOztwq2HCjE2vZqkL/UpTB1ERsKohj2zSqh5xIA==
   dependencies:
-    eventemitter3 "^4.0.7"
+    casper-js-sdk "^2.10.1"
+    eventemitter3 "^5.0.0"
     typedjson "^1.8.0"
     zustand "^4.3.2"
 
-"@casperdash/usewallet@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@casperdash/usewallet/-/usewallet-0.0.3.tgz#0aebfd5dda37e39e5903f2d5dedaee6bdde913d1"
-  integrity sha512-SMGT8qAn79ot7BKl2NeHhvYkHNyAlF2YzZefkFFZVNC7obl9QbwXrSgfUg4yvhj/3L6fRXF01Q7Bv9RB1siFAA==
+"@casperdash/usewallet@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@casperdash/usewallet/-/usewallet-0.0.5.tgz#93d2c0f2cfeecef2136411f842a5eb584d130f2d"
+  integrity sha512-MyzwBl1xpbYy60SpiVTOZqQotzA/+iVJ0TOlMLl53InFFLnMqJ3GJMN4Kn1NTk55D9PIz1feraXzVhmJWzCVnQ==
   dependencies:
-    "@casperdash/usewallet-core" "0.0.3"
+    "@casperdash/usewallet-core" "0.0.5"
     "@tanstack/query-core" "^4.22.0"
     "@tanstack/query-sync-storage-persister" "^4.22.0"
     "@tanstack/react-query" "^4.22.3"
@@ -703,6 +704,29 @@ caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.30001449:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001456.tgz"
   integrity sha512-XFHJY5dUgmpMV25UqaD4kVq2LsiaU5rS8fb0f17pCoXQiQslzmFgnfOxfvo1bTpTqf7dwG/N/05CnLCnOEKmzA==
 
+casper-js-sdk@^2.10.1:
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/casper-js-sdk/-/casper-js-sdk-2.12.1.tgz#67f1614cc379334c4726acc32bb75a8e5f96339a"
+  integrity sha512-gpqOgIVqWxqK0lvxMjUz8p488++buGQDB5p0c+eMpgA5zdyywC+PP72hINbFxN8aiHJlQzME4U9atY7Qh047aw==
+  dependencies:
+    "@ethersproject/bignumber" "^5.0.8"
+    "@ethersproject/bytes" "^5.0.5"
+    "@ethersproject/constants" "^5.0.5"
+    "@open-rpc/client-js" "^1.6.2"
+    "@types/eccrypto" "^1.1.2"
+    "@types/ws" "^8.2.2"
+    blakejs "^1.1.0"
+    eccrypto "^1.1.6"
+    ethereum-cryptography "^0.1.3"
+    humanize-duration "^3.24.0"
+    key-encoder "^2.0.3"
+    lodash "^4.17.21"
+    reflect-metadata "^0.1.13"
+    ts-results "npm:@casperlabs/ts-results@^3.3.4"
+    tweetnacl-ts "^1.0.3"
+    tweetnacl-util "^0.15.0"
+    typedjson "^1.6.0-rc2"
+
 casper-js-sdk@^2.10.2:
   version "2.11.0"
   resolved "https://registry.npmjs.org/casper-js-sdk/-/casper-js-sdk-2.11.0.tgz"
@@ -1016,10 +1040,10 @@ ethereum-cryptography@^0.1.3:
     secp256k1 "^4.0.1"
     setimmediate "^1.0.5"
 
-eventemitter3@^4.0.7:
-  version "4.0.7"
-  resolved "https://registry.npmjs.org/eventemitter3/-/eventemitter3-4.0.7.tgz"
-  integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
+eventemitter3@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-5.0.1.tgz#53f5ffd0a492ac800721bb42c66b841de96423c4"
+  integrity sha512-GWkBvjiSZK87ELrYOSESUYeVIc9mvLLf/nXalMOS5dYrgZq9o5OVkbZAVM06CVxYsCwH9BDZFPlQTlPA1j4ahA==
 
 events@^3.2.0:
   version "3.3.0"
@@ -1352,6 +1376,11 @@ loader-runner@^4.2.0:
   version "4.3.0"
   resolved "https://registry.npmjs.org/loader-runner/-/loader-runner-4.3.0.tgz"
   integrity sha512-3R/1M+yS3j5ou80Me59j7F9IMs4PXs3VqRrm0TU3AbKPxlmpoY1TNscJV/oGJXo8qCatFGTfDbY6W6ipGOYXfg==
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loose-envify@^1.1.0:
   version "1.4.0"
