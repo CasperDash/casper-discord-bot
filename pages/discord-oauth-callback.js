@@ -66,12 +66,14 @@ export async function getServerSideProps({ req, res, query }) {
       `https://api.eggforce.io/lead/${publicKey}/wl-winner`
     );
 
+    const stakingAmount = await getStakingAmount(publicKey);
     const obj = await isWLWinnerRes.json();
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
       iswlwinner: obj.isWLWinner ? 1 : 0,
+      csprstakinggoldsquad: stakingAmount,
     });
 
     // Call CRM API to update isClaimedWL = true based on public key
@@ -97,6 +99,20 @@ export async function getServerSideProps({ req, res, query }) {
       },
     };
   }
+}
+
+async function getStakingAmount(publicKey) {
+  const res = await fetch(
+    `https://event-store-api-clarity-mainnet.make.services/accounts/${publicKey}/delegations?page=1&limit=10&fields=account_info,validator,validator_account_info`
+  );
+  const stakingData = res.json();
+
+  const GOLD_SQUAD =
+    "0100a8faa48e4b20966105c610d8a5f80c4248b337686c51213297d88afe0ff84e";
+  const found = stakingData.data.find(
+    (item) => item.validator_public_key === GOLD_SQUAD
+  );
+  return found ? parseFloat(found.stake) : 0;
 }
 
 /**
