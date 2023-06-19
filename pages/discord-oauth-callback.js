@@ -105,7 +105,7 @@ async function getStakingAmount(publicKey) {
   const res = await fetch(
     `https://event-store-api-clarity-mainnet.make.services/accounts/${publicKey}/delegations?page=1&limit=10&fields=account_info,validator,validator_account_info`
   );
-  const stakingData = res.json();
+  const stakingData = await res.json();
 
   console.log("Staking Data", stakingData);
   const GOLD_SQUAD =
