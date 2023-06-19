@@ -28,6 +28,12 @@ export default async function handler(req, res) {
       description: "Whitelist Winner",
       type: 7,
     },
+    {
+      key: "csprstakinggoldsquad",
+      name: "$CSPR Staking Amount on Gold Squad",
+      description: "$CSPR Staking Amount on Gold Squad Greater Than",
+      type: 2,
+    },
   ];
 
   const response = await fetch(url, {
