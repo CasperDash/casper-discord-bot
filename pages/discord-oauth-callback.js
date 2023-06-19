@@ -109,12 +109,12 @@ async function getStakingAmount(publicKey) {
   );
   const stakingData = await res.json();
 
-  console.log("Staking Data", stakingData);
   const GOLD_SQUAD =
     "0100a8faa48e4b20966105c610d8a5f80c4248b337686c51213297d88afe0ff84e";
   const found = stakingData.data.find(
     (item) => item.validator_public_key === GOLD_SQUAD
   );
+  console.log("Staking Data", stakingData, found);
   return found ? parseFloat(found.stake) : 2;
 }
 
