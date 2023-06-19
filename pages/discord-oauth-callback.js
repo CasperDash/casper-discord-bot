@@ -122,7 +122,10 @@ async function getStakingAmount(publicKey) {
  * Given a Discord UserId, push static make-believe data to the Discord
  * metadata endpoint.
  */
-async function updateMetadata(userId, { casperwallet, iswlwinner }) {
+async function updateMetadata(
+  userId,
+  { casperwallet, iswlwinner, csprstakinggoldsquad }
+) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
 
@@ -135,6 +138,7 @@ async function updateMetadata(userId, { casperwallet, iswlwinner }) {
     metadata = {
       casperwallet,
       iswlwinner,
+      csprstakinggoldsquad,
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;
