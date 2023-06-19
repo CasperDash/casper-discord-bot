@@ -114,8 +114,8 @@ async function getStakingAmount(publicKey) {
   const found = stakingData.data.find(
     (item) => item.validator_public_key === GOLD_SQUAD
   );
-  console.log("Staking Data", stakingData, found);
-  return found ? parseFloat(found.stake) : 2;
+  const MOTE_RATE = 1000000000;
+  return found ? parseFloat(found.stake / MOTE_RATE) : 2;
 }
 
 /**
