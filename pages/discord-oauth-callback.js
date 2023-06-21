@@ -67,6 +67,7 @@ export async function getServerSideProps({ req, res, query }) {
     );
 
     const stakingAmount = await getStakingAmount(publicKey);
+    console.log("STaking Amount", stakingAmount);
     const obj = await isWLWinnerRes.json();
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
