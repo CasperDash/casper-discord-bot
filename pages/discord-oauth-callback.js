@@ -102,10 +102,8 @@ export async function getServerSideProps({ req, res, query }) {
 }
 
 async function getStakingAmount(publicKey) {
-  const test =
-    "020272e404b064614bdafe3c7dc6d5ef5aaaeab903593be45f1a52be242451a9acb6";
   const res = await fetch(
-    `https://event-store-api-clarity-mainnet.make.services/accounts/${test}/delegations?page=1&limit=10&fields=account_info,validator,validator_account_info`
+    `https://event-store-api-clarity-mainnet.make.services/accounts/${publicKey}/delegations?page=1&limit=10&fields=account_info,validator,validator_account_info`
   );
   const stakingData = await res.json();
 
