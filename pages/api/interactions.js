@@ -12,6 +12,7 @@ export default async function handler(req, res, buf) {
   const timestamp = headersInstance.get("X-Signature-Timestamp");
   const config = loadConfig();
 
+  console.log("DEBUG", signature, timestamp, buf, config.DISCORD_PUBLIC_KEY);
   const isValidRequest = verifyKey(
     buf,
     signature,
