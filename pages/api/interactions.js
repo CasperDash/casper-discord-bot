@@ -1,67 +1,118 @@
 import {
-  InteractionResponseType,
   InteractionType,
-  verifyKeyMiddleware,
-  verifyKey,
+  InteractionResponseType,
+  InteractionResponseFlags,
+  MessageComponentTypes,
+  ButtonStyleTypes,
 } from "discord-interactions";
-import loadConfig from "../../src/config.js";
+import { GET_PROFILE } from "../../src/commands.js";
+import withDiscordInteraction from "../../middlewares/discord-interaction.js";
+import withErrorHandler from "../../middlewares/error-handler";
+import { connectToDb } from "../../src/db";
+import Entry from "../../src/db/models/Entry.js";
 
-// Get raw body as string
-async function getRawBody(readable) {
-  const chunks = [];
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
-  }
-  return Buffer.concat(chunks);
-}
-
-export default async function handler(req, res) {
-  const rawBody = await getRawBody(req);
-  const signature = req.headers["x-signature-ed25519"];
-  const timestamp = req.headers["x-signature-timestamp"];
-  const config = loadConfig();
-
-  console.log(
-    "DEBUG",
-    signature,
-    timestamp,
-    req.headers,
-    config.DISCORD_PUBLIC_KEY
-  );
-  const isValidRequest = verifyKey(
-    rawBody,
-    signature,
-    timestamp,
-    config.DISCORD_PUBLIC_KEY
-  );
-  if (!isValidRequest) {
-    res.status(401).send("Bad request signature");
-    throw new Error("Bad request signature");
-  }
-
+const handler = async (req, res, interaction) => {
   if (req.method === "POST") {
     // Process a POST request
-    const message = req.body;
-    console.log("message", message);
-    if (!message) {
-      res.status(400).send({ error: "Unknown Request" });
-      return;
-    }
 
-    if (message.type === InteractionType.PING) {
-      console.log("Handling Ping request 123");
-      return res.send({ type: InteractionResponseType.PONG });
-    } else if (message.type === InteractionType.APPLICATION_COMMAND) {
-      console.log(`Handling application command: ${message.data.name}`);
-      switch (message.data.name.toLowerCase()) {
+    const { type } = interaction;
+
+    if (type === InteractionType.APPLICATION_COMMAND) {
+      const {
+        data: { name, options },
+      } = interaction;
+      if (!name) {
+        res.status(400).send({ error: "Unknown Request" });
+        return;
+      }
+      switch (name) {
         case GET_PROFILE.name.toLowerCase(): {
-          res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          const {
+            member: { nick, user },
+          } = interaction;
+
+          const { id } = user;
+          await connectToDb();
+          const entry = Entry.where({ userId: id });
+          const { publicKey } = await entry.findOne();
+
+          if (entry) {
+            return res.status(200).json({
+              type: 4,
+              data: {
+                embeds: [
+                  {
+                    color: 0x0099ff,
+                    author: {
+                      name: nick,
+                      // icon_url: "https://i.imgur.com/AfFp7pu.png",
+                      // url: "https://discord.js.org",
+                    },
+                    fields: [
+                      {
+                        name: "ID",
+                        value: user.id,
+                      },
+                      {
+                        name: "Wallet",
+                        value: `:white_check_mark: [${publicKey}](https://cspr.live/account/${publicKey})`,
+                      },
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                      text: "CasperDash",
+                      icon_url: "https://assets.eggforce.io/casperdash.webp",
+                    },
+                  },
+                ],
+                components: [
+                  {
+                    type: MessageComponentTypes.ACTION_ROW,
+                    components: [
+                      {
+                        type: MessageComponentTypes.BUTTON,
+                        // Value for your app to identify the button
+                        // custom_id: "link_wallet",
+                        label: "Link Wallet",
+                        style: ButtonStyleTypes.LINK,
+                        url: "https://discord.casperdash.io/verify-wallet",
+                      },
+                    ],
+                  },
+                ],
+                flags: InteractionResponseFlags.EPHEMERAL,
+              },
+            });
+          }
+          const message = {
+            color: 0x0099ff,
+            author: {
+              name: nick,
+            },
+            fields: [
+              {
+                name: "ID",
+                value: user.id,
+              },
+              {
+                name: "Wallet",
+                value: `:white_check_mark: [${publicKey}](https://cspr.live/account/${publicKey})`,
+              },
+            ],
+            timestamp: new Date().toISOString(),
+            footer: {
+              text: "CasperDash",
+              icon_url: "https://assets.eggforce.io/casperdash.webp",
+            },
+          };
+
+          return res.status(200).json({
+            type: 4,
             data: {
-              content: "123",
+              embeds: [message],
+              flags: InteractionResponseFlags.EPHEMERAL,
             },
           });
-          break;
         }
         default:
           console.error("Unknown Command");
@@ -69,7 +120,30 @@ export default async function handler(req, res) {
           break;
       }
     }
+
+    console.log("COmpo", type);
+
+    if (type === InteractionType.MESSAGE_COMPONENT) {
+      const {
+        data: { custom_id },
+      } = interaction;
+      const componentId = custom_id;
+      if (componentId === "link_wallet") {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: `Clicked the button` },
+        });
+      }
+    }
   } else {
     res.status(200).json({ name: "Hello World" });
   }
-}
+};
+
+// disable body parsing, need the raw body as per https://discord.com/developers/docs/interactions/slash-commands#security-and-authorization
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+export default withErrorHandler(withDiscordInteraction(handler));
