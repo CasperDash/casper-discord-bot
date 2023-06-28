@@ -6,11 +6,17 @@ import {
 } from "discord-interactions";
 import loadConfig from "../../src/config.js";
 
-export default async function handler(req, res) {
-  const signature = req.get("X-Signature-Ed25519");
-  const timestamp = req.get("X-Signature-Timestamp");
+export default async function handler(req, res, buf) {
+  const signature = req.headers["X-Signature-Ed25519"];
+  const timestamp = req.headers["X-Signature-Timestamp"];
+  const config = loadConfig();
 
-  const isValidRequest = verifyKey(buf, signature, timestamp, clientKey);
+  const isValidRequest = verifyKey(
+    buf,
+    signature,
+    timestamp,
+    config.DISCORD_PUBLIC_KEY
+  );
   if (!isValidRequest) {
     res.status(401).send("Bad request signature");
     throw new Error("Bad request signature");
@@ -18,7 +24,6 @@ export default async function handler(req, res) {
 
   if (req.method === "POST") {
     // Process a POST request
-    const config = loadConfig();
     const message = req.body;
     console.log("message", message);
     if (!message) {
