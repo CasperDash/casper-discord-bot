@@ -6,7 +6,17 @@ import {
 } from "discord-interactions";
 import loadConfig from "../../src/config.js";
 
-export default async function handler(req, res, buf) {
+// Get raw body as string
+async function getRawBody(readable) {
+  const chunks = [];
+  for await (const chunk of readable) {
+    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
+  }
+  return Buffer.concat(chunks);
+}
+
+export default async function handler(req, res) {
+  const rawBody = await getRawBody(req);
   const signature = req.headers["x-signature-ed25519"];
   const timestamp = req.headers["x-signature-timestamp"];
   const config = loadConfig();
@@ -19,7 +29,7 @@ export default async function handler(req, res, buf) {
     config.DISCORD_PUBLIC_KEY
   );
   const isValidRequest = verifyKey(
-    buf,
+    rawBody,
     signature,
     timestamp,
     config.DISCORD_PUBLIC_KEY
