@@ -7,8 +7,9 @@ import {
 import loadConfig from "../../src/config.js";
 
 export default async function handler(req, res, buf) {
-  const signature = req.headers["X-Signature-Ed25519"];
-  const timestamp = req.headers["X-Signature-Timestamp"];
+  const headersInstance = headers();
+  const signature = headersInstance.get("X-Signature-Ed25519");
+  const timestamp = headersInstance.get("X-Signature-Timestamp");
   const config = loadConfig();
 
   const isValidRequest = verifyKey(
