@@ -7,12 +7,17 @@ import {
 import loadConfig from "../../src/config.js";
 
 export default async function handler(req, res, buf) {
-  const headersInstance = headers();
-  const signature = headersInstance.get("X-Signature-Ed25519");
-  const timestamp = headersInstance.get("X-Signature-Timestamp");
+  const signature = request.headers["X-Signature-Ed25519"];
+  const timestamp = request.headers["X-Signature-Timestamp"];
   const config = loadConfig();
 
-  console.log("DEBUG", signature, timestamp, buf, config.DISCORD_PUBLIC_KEY);
+  console.log(
+    "DEBUG",
+    signature,
+    timestamp,
+    request.headers,
+    config.DISCORD_PUBLIC_KEY
+  );
   const isValidRequest = verifyKey(
     buf,
     signature,
