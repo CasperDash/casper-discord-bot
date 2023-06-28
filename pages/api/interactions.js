@@ -18,9 +18,7 @@ export default async function handler(req, res) {
 
     if (message.type === InteractionType.PING) {
       console.log("Handling Ping request");
-      res.status(200).json({
-        type: InteractionResponseType.PONG,
-      });
+      return res.send({ type: InteractionResponseType.PONG });
     } else if (message.type === InteractionType.APPLICATION_COMMAND) {
       console.log(`Handling application command: ${message.data.name}`);
       switch (message.data.name.toLowerCase()) {
