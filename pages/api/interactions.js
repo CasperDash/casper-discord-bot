@@ -119,10 +119,11 @@ const handler = async (req, res, interaction) => {
             const { id } = user;
             console.log("Connecting to DB");
             await connectToDb();
-            const entry = Entry.where({ userId: id });
-            console.log("User", id);
+            const entry = await Entry.where({ userId: id }).findOne();
+            console.log("DEBUG", entry);
             const { isWLWinner } = await entry.findOne();
             if (entry) {
+              console.log("Found entry");
               const wlRoundMessage = isWLWinner
                 ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 20203"
                 : ":x: Your wallet is unqualified to min Eggs in WL Round. Please join us as Public Round on 27th 2023";
@@ -150,8 +151,7 @@ const handler = async (req, res, interaction) => {
                       timestamp: new Date().toISOString(),
                       footer: {
                         text: "EggForce",
-                        icon_url:
-                          "https://eggforce.io/static/media/eggforce--logo__ver2_color.1b48c729ba5a2f91b7cd.webp",
+                        icon_url: "https://assets.eggforce.io/casperdash.webp",
                       },
                     },
                   ],
