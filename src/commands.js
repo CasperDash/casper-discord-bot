@@ -13,3 +13,8 @@ export const GET_PROFILE = {
   name: "profile",
   description: "Fetch the linked Casper Wallet profile information.",
 };
+
+export const CHECK_WL = {
+  name: "check-whitelist",
+  description: "Check the Casper Wallet is Whitelisted to specific NFT project",
+};

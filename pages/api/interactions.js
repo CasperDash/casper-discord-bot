@@ -5,7 +5,7 @@ import {
   MessageComponentTypes,
   ButtonStyleTypes,
 } from "discord-interactions";
-import { GET_PROFILE } from "../../src/commands.js";
+import { GET_PROFILE, CHECK_WL } from "../../src/commands.js";
 import withDiscordInteraction from "../../middlewares/discord-interaction.js";
 import withErrorHandler from "../../middlewares/error-handler";
 import { connectToDb } from "../../src/db";
@@ -113,6 +113,64 @@ const handler = async (req, res, interaction) => {
               flags: InteractionResponseFlags.EPHEMERAL,
             },
           });
+        }
+        case CHECK_WL.name.toLocaleLowerCase(): {
+          const { id } = user;
+          await connectToDb();
+          const entry = Entry.where({ userId: id });
+          const { isWLWinner } = await entry.findOne();
+          if (entry) {
+            const wlRoundMessage = isWLWinner
+              ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 20203"
+              : ":x: Your wallet is unqualified to min Eggs in WL Round. Please join us as Public Round on 27th 2023";
+            return res.status(200).json({
+              type: 4,
+              data: {
+                embeds: [
+                  {
+                    color: 0x0099ff,
+                    author: {
+                      name: nick,
+                      // icon_url: "https://i.imgur.com/AfFp7pu.png",
+                      // url: "https://discord.js.org",
+                    },
+                    fields: [
+                      {
+                        name: "ID",
+                        value: user.id,
+                      },
+                      {
+                        value: "Whitelist Round Eligibility",
+                        value: wlRoundMessage,
+                      },
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                      text: "EggForce",
+                      icon_url:
+                        "https://eggforce.io/static/media/eggforce--logo__ver2_color.1b48c729ba5a2f91b7cd.webp",
+                    },
+                  },
+                ],
+                components: [
+                  {
+                    type: MessageComponentTypes.ACTION_ROW,
+                    components: [
+                      {
+                        type: MessageComponentTypes.BUTTON,
+                        // Value for your app to identify the button
+                        // custom_id: "link_wallet",
+                        label: "Link Wallet",
+                        style: ButtonStyleTypes.LINK,
+                        url: "https://discord.casperdash.io/verify-wallet",
+                      },
+                    ],
+                  },
+                ],
+                flags: InteractionResponseFlags.EPHEMERAL,
+              },
+            });
+          }
         }
         default:
           console.error("Unknown Command");
