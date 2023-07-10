@@ -108,8 +108,8 @@ const handler = async (req, res, interaction) => {
             if (entry) {
               const { isWLWinner } = entry;
               const wlRoundMessage = isWLWinner
-                ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 20203"
-                : ":no_entry_sign: Your wallet is unqualified to mine Eggs in the WL Round. Please join us as the Public Round on 27th July 2023! :tada:";
+                ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 2023"
+                : ":no_entry_sign: Your wallet is unqualified to mint Eggs in the WL Round. Please join us as the Public Round on 27th July 2023! :tada:";
               return res.status(200).json({
                 type: 4,
                 data: {
