@@ -150,8 +150,9 @@ const handler = async (req, res, interaction) => {
                       ],
                       timestamp: new Date().toISOString(),
                       footer: {
-                        text: "CasperDash",
-                        icon_url: "https://assets.eggforce.io/casperdash.webp",
+                        text: "EggForce",
+                        icon_url:
+                          "https://eggforce.io/static/media/eggforce--logo__ver2_color.1b48c729ba5a2f91b7cd.webp",
                       },
                     },
                   ],
