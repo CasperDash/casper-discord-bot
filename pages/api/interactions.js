@@ -25,12 +25,11 @@ const handler = async (req, res, interaction) => {
         res.status(400).send({ error: "Unknown Request" });
         return;
       }
+      const {
+        member: { nick, user },
+      } = interaction;
       switch (name) {
         case GET_PROFILE.name.toLowerCase(): {
-          const {
-            member: { nick, user },
-          } = interaction;
-
           const { id } = user;
           await connectToDb();
           const entry = Entry.where({ userId: id });
