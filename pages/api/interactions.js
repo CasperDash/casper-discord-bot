@@ -5,6 +5,7 @@ import {
   MessageComponentTypes,
   ButtonStyleTypes,
 } from "discord-interactions";
+import { request } from "gaxios";
 import { GET_PROFILE, CHECK_WL } from "../../src/commands.js";
 import withDiscordInteraction from "../../middlewares/discord-interaction.js";
 import withErrorHandler from "../../middlewares/error-handler";
@@ -106,8 +107,11 @@ const handler = async (req, res, interaction) => {
             const entry = await Entry.where({ userId: id }).findOne();
             console.log("DEBUG", entry);
             if (entry) {
-              const { isWLWinner } = entry;
-              const wlRoundMessage = isWLWinner
+              const { publicKey } = entry;
+              const res = await request({
+                url: `https://api.eggforce.io/lead/${publicKey}/wl-winner`,
+              });
+              const wlRoundMessage = res?.data?.isWLWinner
                 ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 2023"
                 : ":no_entry_sign: Your wallet is unqualified to mint Eggs in the WL Round. Please join us as the Public Round on 27th July 2023! :tada:";
               return res.status(200).json({
