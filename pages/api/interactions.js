@@ -108,10 +108,10 @@ const handler = async (req, res, interaction) => {
             console.log("DEBUG", entry);
             if (entry) {
               const { publicKey } = entry;
-              const res = await request({
+              const wlRes = await request({
                 url: `https://api.eggforce.io/lead/${publicKey}/wl-winner`,
               });
-              const wlRoundMessage = res?.data?.isWLWinner
+              const wlRoundMessage = wlRes?.data?.isWLWinner
                 ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 2023"
                 : ":no_entry_sign: Your wallet is unqualified to mint Eggs in the WL Round. Please join us as the Public Round on 27th July 2023! :tada:";
               return res.status(200).json({
