@@ -121,8 +121,8 @@ const handler = async (req, res, interaction) => {
             await connectToDb();
             const entry = await Entry.where({ userId: id }).findOne();
             console.log("DEBUG", entry);
-            const { isWLWinner } = await entry.findOne();
             if (entry) {
+              const { isWLWinner } = entry;
               console.log("Found entry");
               const wlRoundMessage = isWLWinner
                 ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 20203"
