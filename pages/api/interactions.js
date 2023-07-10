@@ -123,10 +123,10 @@ const handler = async (req, res, interaction) => {
             console.log("DEBUG", entry);
             if (entry) {
               const { isWLWinner } = entry;
-              console.log("Found entry");
               const wlRoundMessage = isWLWinner
                 ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 20203"
                 : ":x: Your wallet is unqualified to min Eggs in WL Round. Please join us as Public Round on 27th 2023";
+              console.log("Found entry", wlRoundMessage);
               return res.status(200).json({
                 type: 4,
                 data: {
@@ -144,13 +144,13 @@ const handler = async (req, res, interaction) => {
                           value: user.id,
                         },
                         {
-                          value: "Whitelist Round Eligibility",
+                          value: "Whitelist-Eligibility",
                           value: wlRoundMessage,
                         },
                       ],
                       timestamp: new Date().toISOString(),
                       footer: {
-                        text: "EggForce",
+                        text: "CasperDash",
                         icon_url: "https://assets.eggforce.io/casperdash.webp",
                       },
                     },
