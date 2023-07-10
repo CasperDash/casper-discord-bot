@@ -144,7 +144,7 @@ const handler = async (req, res, interaction) => {
                           value: user.id,
                         },
                         {
-                          name: "Whitelist",
+                          name: "Whitelist Eligibility",
                           value: wlRoundMessage,
                         },
                       ],
