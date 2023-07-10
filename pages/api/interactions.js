@@ -171,6 +171,36 @@ const handler = async (req, res, interaction) => {
               },
             });
           }
+
+          const message = {
+            color: 0x0099ff,
+            author: {
+              name: nick,
+            },
+            fields: [
+              {
+                name: "ID",
+                value: user.id,
+              },
+              {
+                name: "Whitelist Round Eligibility",
+                value: `You have never registered the Whitelist Ticket. Claim it eggforce.io/world now.`,
+              },
+            ],
+            timestamp: new Date().toISOString(),
+            footer: {
+              text: "CasperDash",
+              icon_url: "https://assets.eggforce.io/casperdash.webp",
+            },
+          };
+
+          return res.status(200).json({
+            type: 4,
+            data: {
+              embeds: [message],
+              flags: InteractionResponseFlags.EPHEMERAL,
+            },
+          });
         }
         default:
           console.error("Unknown Command");
