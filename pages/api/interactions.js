@@ -33,10 +33,8 @@ const handler = async (req, res, interaction) => {
           const { id } = user;
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
-          console.log("DEBUG", entry);
           if (entry) {
             const { publicKey } = entry;
-            console.log("Found entry", publicKey);
             return res.status(200).json({
               type: 4,
               data: {
@@ -65,21 +63,7 @@ const handler = async (req, res, interaction) => {
                     },
                   },
                 ],
-                components: [
-                  {
-                    type: MessageComponentTypes.ACTION_ROW,
-                    components: [
-                      {
-                        type: MessageComponentTypes.BUTTON,
-                        // Value for your app to identify the button
-                        // custom_id: "link_wallet",
-                        label: "Link Wallet",
-                        style: ButtonStyleTypes.LINK,
-                        url: "https://discord.casperdash.io/verify-wallet",
-                      },
-                    ],
-                  },
-                ],
+                components: [],
                 flags: InteractionResponseFlags.EPHEMERAL,
               },
             });
@@ -125,8 +109,7 @@ const handler = async (req, res, interaction) => {
               const { isWLWinner } = entry;
               const wlRoundMessage = isWLWinner
                 ? ":white_check_mark: Your wallet is eligible to mint Eggs in WL Round on July 17th 20203"
-                : ":x: Your wallet is unqualified to min Eggs in WL Round. Please join us as Public Round on 27th 2023";
-              console.log("Found entry", wlRoundMessage);
+                : ":no_entry_sign: Your wallet is unqualified to mine Eggs in the WL Round. Please join us as the Public Round on 27th July 2023! :tada:";
               return res.status(200).json({
                 type: 4,
                 data: {
@@ -156,21 +139,7 @@ const handler = async (req, res, interaction) => {
                       },
                     },
                   ],
-                  components: [
-                    {
-                      type: MessageComponentTypes.ACTION_ROW,
-                      components: [
-                        {
-                          type: MessageComponentTypes.BUTTON,
-                          // Value for your app to identify the button
-                          // custom_id: "link_wallet",
-                          label: "Link Wallet",
-                          style: ButtonStyleTypes.LINK,
-                          url: "https://discord.casperdash.io/verify-wallet",
-                        },
-                      ],
-                    },
-                  ],
+
                   flags: InteractionResponseFlags.EPHEMERAL,
                 },
               });
@@ -188,7 +157,7 @@ const handler = async (req, res, interaction) => {
                   value: user.id,
                 },
                 {
-                  name: "Whitelist Round Eligibility",
+                  name: "Whitelist Eligibility",
                   value: `You have never registered the Whitelist Ticket. Claim it eggforce.io/world now.`,
                 },
               ],
@@ -203,6 +172,21 @@ const handler = async (req, res, interaction) => {
               type: 4,
               data: {
                 embeds: [message],
+                components: [
+                  {
+                    type: MessageComponentTypes.ACTION_ROW,
+                    components: [
+                      {
+                        type: MessageComponentTypes.BUTTON,
+                        // Value for your app to identify the button
+                        // custom_id: "link_wallet",
+                        label: "Link Wallet",
+                        style: ButtonStyleTypes.LINK,
+                        url: "https://discord.casperdash.io/verify-wallet",
+                      },
+                    ],
+                  },
+                ],
                 flags: InteractionResponseFlags.EPHEMERAL,
               },
             });
