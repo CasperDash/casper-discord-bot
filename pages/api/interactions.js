@@ -32,10 +32,11 @@ const handler = async (req, res, interaction) => {
         case GET_PROFILE.name.toLowerCase(): {
           const { id } = user;
           await connectToDb();
-          const entry = Entry.where({ userId: id });
-          const { publicKey } = await entry.findOne();
-
+          const entry = await Entry.where({ userId: id }).findOne();
+          console.log("DEBUG", entry);
           if (entry) {
+            const { publicKey } = entry;
+            console.log("Found entry", publicKey);
             return res.status(200).json({
               type: 4,
               data: {
@@ -174,6 +175,7 @@ const handler = async (req, res, interaction) => {
               });
             }
 
+            console.log("Could not find the entry");
             const message = {
               color: 0x0099ff,
               author: {
