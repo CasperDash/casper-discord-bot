@@ -207,12 +207,14 @@ const handler = async (req, res, interaction) => {
           console.log("Connecting to DB");
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
+          console.log("entry", entry);
           if (entry) {
             const { publicKey } = entry;
             const wlRes = await request({
               url: `https://api.eggforce.io/user/${publicKey}`,
             });
             const { totalEgg } = wlRes?.data;
+            console.log("DEBUG", wlRes?.data);
             return res.status(200).json({
               type: 4,
               data: {
