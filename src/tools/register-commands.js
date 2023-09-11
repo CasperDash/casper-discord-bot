@@ -1,6 +1,11 @@
 import { request } from "gaxios";
 import "dotenv/config";
-import { DISCONNECT, GET_PROFILE, CHECK_WL } from "../commands.js";
+import {
+  DISCONNECT,
+  GET_PROFILE,
+  CHECK_WL,
+  GET_HATCHERS_PROFILE,
+} from "../commands.js";
 import loadConfig from "../config.js";
 
 const config = loadConfig();
@@ -30,7 +35,12 @@ async function registerCommands(url) {
       Authorization: `Bot ${config.DISCORD_TOKEN}`,
     },
     method: "PUT",
-    body: JSON.stringify([GET_PROFILE, DISCONNECT, CHECK_WL]),
+    body: JSON.stringify([
+      GET_PROFILE,
+      DISCONNECT,
+      CHECK_WL,
+      GET_HATCHERS_PROFILE,
+    ]),
   });
   console.log("Registered all commands");
   return res.data;

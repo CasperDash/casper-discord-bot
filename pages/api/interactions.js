@@ -6,7 +6,11 @@ import {
   ButtonStyleTypes,
 } from "discord-interactions";
 import { request } from "gaxios";
-import { GET_PROFILE, CHECK_WL } from "../../src/commands.js";
+import {
+  GET_PROFILE,
+  CHECK_WL,
+  GET_HATCHERS_PROFILE,
+} from "../../src/commands.js";
 import withDiscordInteraction from "../../middlewares/discord-interaction.js";
 import withErrorHandler from "../../middlewares/error-handler";
 import { connectToDb } from "../../src/db";
@@ -196,6 +200,48 @@ const handler = async (req, res, interaction) => {
             });
           } catch (error) {
             console.error("Something is wrong", error);
+          }
+        }
+        case GET_HATCHERS_PROFILE.name.toLocaleLowerCase(): {
+          const { id } = user;
+          console.log("Connecting to DB");
+          await connectToDb();
+          const entry = await Entry.where({ userId: id }).findOne();
+          if (entry) {
+            const { publicKey } = entry;
+            const wlRes = await request({
+              url: `https://api.eggforce.io/user/${publicKey}`,
+            });
+            const { totalEgg } = wlRes?.data;
+            return res.status(200).json({
+              type: 4,
+              data: {
+                embeds: [
+                  {
+                    color: 0x0099ff,
+                    author: {
+                      name: nick,
+                      // icon_url: "https://i.imgur.com/AfFp7pu.png",
+                      // url: "https://discord.js.org",
+                    },
+                    fields: [
+                      {
+                        name: "# Eggs",
+                        value: totalEgg,
+                      },
+                    ],
+                    timestamp: new Date().toISOString(),
+                    footer: {
+                      text: "EggForce",
+                      icon_url:
+                        "https://eggforce.io/static/media/eggforce--logo__ver2_color.1b48c729ba5a2f91b7cd.webp",
+                    },
+                  },
+                ],
+                components: [],
+                flags: InteractionResponseFlags.EPHEMERAL,
+              },
+            });
           }
         }
         default:
