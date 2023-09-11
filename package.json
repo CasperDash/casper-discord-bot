@@ -20,6 +20,7 @@
   "dependencies": {
     "@casperdash/usewallet": "^0.0.5",
     "casper-js-sdk": "^2.10.2",
+    "connect-timeout": "^1.9.0",
     "cookie-parser": "^1.4.6",
     "cookies-next": "^2.1.1",
     "discord-interactions": "^3.4.0",
