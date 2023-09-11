@@ -1,5 +1,6 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import timeout from "connect-timeout";
 
 import config from "./config.js";
 import * as discord from "./discord.js";
@@ -10,6 +11,7 @@ import * as storage from "./storage.js";
  */
 
 const app = express();
+app.use(timeout(120000));
 app.use(cookieParser(config.COOKIE_SECRET));
 
 /**
