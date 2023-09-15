@@ -217,11 +217,10 @@ const handler = async (req, res, interaction) => {
             request({
               url: `https://api.eggforce.io/user/${publicKey}`,
             }).then((wlRes) => {
-              const { totalEgg } = wlRes?.data;
-              console.log("Total Egg", totalEgg);
+              const { totalEgg, publicKey } = wlRes?.data;
               Entry.updateOne(
                 {
-                  userId,
+                  publicKey,
                 },
                 {
                   noEggs: Number.parseInt(totalEgg),
