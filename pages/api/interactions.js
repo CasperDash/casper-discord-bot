@@ -214,23 +214,24 @@ const handler = async (req, res, interaction) => {
           console.log("entry", entry);
           if (entry) {
             const { publicKey } = entry;
-            const wlRes = await request({
+            request({
               url: `https://api.eggforce.io/user/${publicKey}`,
+            }).then((wlRes) => {
+              const { totalEgg } = wlRes?.data;
+              console.log("Total Egg", totalEgg);
+              Entry.updateOne(
+                {
+                  userId,
+                },
+                {
+                  noEggs: Number.parseInt(totalEgg),
+                },
+                {
+                  upsert: true,
+                }
+              );
             });
-            const { totalEgg } = wlRes?.data;
-            console.log("Total Egg", totalEgg);
-            await Entry.updateOne(
-              {
-                userId,
-              },
-              {
-                noEggs: Number.parseInt(totalEgg),
-              },
-              {
-                upsert: true,
-              }
-            );
-            console.log("Updated ok");
+
             return res.status(200).json({
               type: 4,
               data: {
@@ -245,7 +246,7 @@ const handler = async (req, res, interaction) => {
                     fields: [
                       {
                         name: "# Eggs",
-                        value: totalEgg,
+                        value: "Updated new data",
                       },
                     ],
                     timestamp: new Date().toISOString(),
