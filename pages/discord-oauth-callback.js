@@ -66,14 +66,21 @@ export async function getServerSideProps({ req, res, query }) {
       `https://api.eggforce.io/lead/${publicKey}/wl-winner`
     );
 
+    const hatcherRes = await fetch({
+      url: `https://api.eggforce.io/user/${publicKey}`,
+    });
+
     const stakingAmount = await getStakingAmount(publicKey);
     const obj = await isWLWinnerRes.json();
+    const hatcher = await hatcherRes.json();
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
       casperwallet: 1,
       iswlwinner: obj.isWLWinner ? 1 : 0,
       csprstakinggoldsquad: stakingAmount,
+      eggs: Number.parseInt(hatcher.totalEgg),
+      snc: Number.parseInt(hatcher.totalSnc),
     });
 
     // Call CRM API to update isClaimedWL = true based on public key

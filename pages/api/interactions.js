@@ -211,7 +211,6 @@ const handler = async (req, res, interaction) => {
           console.log("Connecting to DB");
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
-          console.log("entry", entry);
           if (entry) {
             const { publicKey } = entry;
             request({
@@ -240,13 +239,12 @@ const handler = async (req, res, interaction) => {
                     color: 0x0099ff,
                     author: {
                       name: nick,
-                      // icon_url: "https://i.imgur.com/AfFp7pu.png",
-                      // url: "https://discord.js.org",
                     },
                     fields: [
                       {
                         name: "# Eggs",
-                        value: "Updated new data",
+                        value:
+                          "Refreshing new Egg data. Please use profile command to see it",
                       },
                     ],
                     timestamp: new Date().toISOString(),
