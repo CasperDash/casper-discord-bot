@@ -39,7 +39,7 @@ const handler = async (req, res, interaction) => {
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
           if (entry) {
-            const { publicKey } = entry;
+            const { publicKey, noEggs } = entry;
             return res.status(200).json({
               type: 4,
               data: {
@@ -59,6 +59,10 @@ const handler = async (req, res, interaction) => {
                       {
                         name: "Wallet",
                         value: `:white_check_mark: [${publicKey}](https://cspr.live/account/${publicKey})`,
+                      },
+                      {
+                        name: "Number of Eggs",
+                        value: `:egg: ${noEggs}`,
                       },
                     ],
                     timestamp: new Date().toISOString(),
