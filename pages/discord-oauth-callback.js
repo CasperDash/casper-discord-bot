@@ -66,7 +66,10 @@ export async function getServerSideProps({ req, res, query }) {
       `https://api.eggforce.io/lead/${publicKey}/wl-winner`
     );
 
+    console.log("DEBUG here");
     const hatcherRes = await fetch(`https://api.eggforce.io/user/${publicKey}`);
+
+    console.log("Can pass?");
 
     const stakingAmount = await getStakingAmount(publicKey);
     const obj = await isWLWinnerRes.json();
