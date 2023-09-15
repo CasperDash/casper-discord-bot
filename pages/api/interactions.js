@@ -216,9 +216,9 @@ const handler = async (req, res, interaction) => {
             const { publicKey } = entry;
             request({
               url: `https://api.eggforce.io/user/${publicKey}`,
-            }).then((wlRes) => {
+            }).then(async (wlRes) => {
               const { totalEgg, publicKey } = wlRes?.data;
-              Entry.updateOne(
+              const result = await Entry.updateOne(
                 {
                   publicKey,
                 },
@@ -229,6 +229,7 @@ const handler = async (req, res, interaction) => {
                   upsert: true,
                 }
               );
+              console.log("Result", result);
             });
 
             return res.status(200).json({
