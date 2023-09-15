@@ -25,6 +25,10 @@ export default mongoose.models.Entry ||
           type: Boolean,
           default: false,
         },
+        noEggs: {
+          type: Number,
+          default: 0,
+        },
       },
       {
         timestamps: true,
