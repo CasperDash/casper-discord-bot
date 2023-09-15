@@ -40,12 +40,6 @@ export default async function handler(req, res) {
       description: "The number of Eggs Greater Than",
       type: 2,
     },
-    {
-      key: "snc",
-      name: "SNC",
-      description: "$SNC Greater Than",
-      type: 2,
-    },
   ];
 
   const response = await fetch(url, {

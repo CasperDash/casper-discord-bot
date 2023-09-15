@@ -66,9 +66,7 @@ export async function getServerSideProps({ req, res, query }) {
       `https://api.eggforce.io/lead/${publicKey}/wl-winner`
     );
 
-    const hatcherRes = await fetch({
-      url: `https://api.eggforce.io/user/${publicKey}`,
-    });
+    const hatcherRes = await fetch(`https://api.eggforce.io/user/${publicKey}`);
 
     const stakingAmount = await getStakingAmount(publicKey);
     const obj = await isWLWinnerRes.json();
@@ -80,7 +78,6 @@ export async function getServerSideProps({ req, res, query }) {
       iswlwinner: obj.isWLWinner ? 1 : 0,
       csprstakinggoldsquad: stakingAmount,
       eggs: Number.parseInt(hatcher.totalEgg),
-      snc: Number.parseInt(hatcher.totalSnc),
     });
 
     // Call CRM API to update isClaimedWL = true based on public key
