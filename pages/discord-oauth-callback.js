@@ -87,6 +87,7 @@ export async function getServerSideProps({ req, res, query }) {
     await persistWalletInfo(userId, {
       publicKey,
       isWLWinner: obj.isWLWinner,
+      noEggs: Number.parseInt(hatcher.totalEgg),
     });
 
     return {
@@ -129,7 +130,7 @@ async function getStakingAmount(publicKey) {
  */
 async function updateMetadata(
   userId,
-  { casperwallet, iswlwinner, csprstakinggoldsquad }
+  { casperwallet, iswlwinner, csprstakinggoldsquad, eggs }
 ) {
   // Fetch the Discord tokens from storage
   const tokens = await storage.getDiscordTokens(userId);
@@ -144,6 +145,7 @@ async function updateMetadata(
       casperwallet,
       iswlwinner,
       csprstakinggoldsquad,
+      eggs,
     };
   } catch (e) {
     e.message = `Error fetching external data: ${e.message}`;
@@ -160,7 +162,7 @@ async function updateMetadata(
 
 async function persistWalletInfo(
   userId,
-  { publicKey, isHammerHodler, isWLWinner }
+  { publicKey, isHammerHodler, isWLWinner, noEggs }
 ) {
   await connectToDb();
   return await Entry.updateOne(
@@ -171,6 +173,7 @@ async function persistWalletInfo(
       publicKey,
       isHammerHodler,
       isWLWinner,
+      noEggs,
     },
     {
       upsert: true,
