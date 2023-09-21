@@ -11,6 +11,9 @@ import {
   CHECK_WL,
   GET_HATCHERS_PROFILE,
 } from "../../src/commands.js";
+import * as storage from "../../src/storage.js";
+import * as discord from "../../src/discord.js";
+
 import withDiscordInteraction from "../../middlewares/discord-interaction.js";
 import withErrorHandler from "../../middlewares/error-handler";
 import { connectToDb } from "../../src/db";
@@ -211,24 +214,28 @@ const handler = async (req, res, interaction) => {
           console.log("Connecting to DB");
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
+          const tokens = await storage.getDiscordTokens(userId);
           if (entry) {
             const { publicKey } = entry;
             request({
               url: `https://api.eggforce.io/user/${publicKey}`,
             }).then(async (wlRes) => {
               const { totalEgg, publicKey } = wlRes?.data;
+              const noEggs = Number.parseInt(totalEgg);
               const result = await Entry.updateOne(
                 {
                   publicKey,
                 },
                 {
-                  noEggs: Number.parseInt(totalEgg),
+                  noEggs,
                 },
                 {
                   upsert: true,
                 }
               );
-              console.log("Result", result);
+              await discord.pushMetadata(id, tokens, {
+                eggs: noEggs,
+              });
             });
 
             return res.status(200).json({
