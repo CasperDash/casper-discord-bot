@@ -215,6 +215,7 @@ const handler = async (req, res, interaction) => {
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
           const tokens = await storage.getDiscordTokens(id);
+          console.log("tokens", tokens);
           if (entry) {
             const { publicKey } = entry;
             request({
