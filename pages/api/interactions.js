@@ -214,7 +214,7 @@ const handler = async (req, res, interaction) => {
           console.log("Connecting to DB");
           await connectToDb();
           const entry = await Entry.where({ userId: id }).findOne();
-          const tokens = await storage.getDiscordTokens(userId);
+          const tokens = await storage.getDiscordTokens(id);
           if (entry) {
             const { publicKey } = entry;
             request({
@@ -233,6 +233,7 @@ const handler = async (req, res, interaction) => {
                   upsert: true,
                 }
               );
+              console.log("DEBUG", result, noEggs, tokens);
               await discord.pushMetadata(id, tokens, {
                 eggs: noEggs,
               });
@@ -274,8 +275,6 @@ const handler = async (req, res, interaction) => {
           break;
       }
     }
-
-    console.log("COmpo", type);
 
     if (type === InteractionType.MESSAGE_COMPONENT) {
       const {
