@@ -66,16 +66,12 @@ export async function getServerSideProps({ req, res, query }) {
       `https://api.eggforce.io/lead/${publicKey}/wl-winner`
     );
 
-    console.log("DEBUG here");
     const hatcherRes = await fetch(`https://api.eggforce.io/user/${publicKey}`);
-
-    console.log("Can pass?");
 
     const stakingAmount = await getStakingAmount(publicKey);
     const obj = await isWLWinnerRes.json();
     const hatcher = await hatcherRes.json();
     const eggs = Number.parseInt(hatcher.totalEgg);
-    console.log("Egg", eggs);
 
     // 3. Update the users metadata, assuming future updates will be posted to the `/update-metadata` endpoint
     await updateMetadata(userId, {
